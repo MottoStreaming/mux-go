@@ -67,8 +67,14 @@ type service struct {
 func NewAPIClient(cfg *Configuration) *APIClient {
 	c := &APIClient{}
 	c.cfg = cfg
+
+	if cfg.httpRoundTripper == nil {
+		cfg.httpRoundTripper = http.DefaultTransport
+	}
+
 	c.httpc = &http.Client{
-		Timeout: cfg.timeout,
+		Timeout:   cfg.timeout,
+		Transport: cfg.httpRoundTripper,
 	}
 	c.common.client = c
 
@@ -467,6 +473,10 @@ type BadRequestError struct {
 
 func (e BadRequestError) Error() string {
 	return e.error
+}
+
+func (e BadRequestError) Body() []byte {
+	return e.body
 }
 
 // 401 Error

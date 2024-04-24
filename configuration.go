@@ -4,16 +4,18 @@
 package muxgo
 
 import (
+	"net/http"
 	"time"
 )
 
 type Configuration struct {
-	basePath  string `json:"basePath,omitempty"`
-	host      string `json:"host,omitempty"`
-	userAgent string `json:"userAgent,omitempty"`
-	username  string
-	password  string
-	timeout   time.Duration
+	basePath         string `json:"basePath,omitempty"`
+	host             string `json:"host,omitempty"`
+	userAgent        string `json:"userAgent,omitempty"`
+	username         string
+	password         string
+	timeout          time.Duration
+	httpRoundTripper http.RoundTripper
 }
 
 // ConfigurationOption configures the Mux API Client.
@@ -46,5 +48,11 @@ func WithTimeout(t time.Duration) ConfigurationOption {
 func WithHost(host string) ConfigurationOption {
 	return func(c *Configuration) {
 		c.host = host
+	}
+}
+
+func WithHTTPRoundTripper(roundTripper http.RoundTripper) ConfigurationOption {
+	return func(c *Configuration) {
+		c.httpRoundTripper = roundTripper
 	}
 }

@@ -1,4 +1,4 @@
-module github.com/muxinc/mux-go/v5
+module github.com/rgalus/mux-go/v5
 
 go 1.15
 
